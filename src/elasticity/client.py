@@ -1,48 +1,34 @@
-
-# Copyright (c) 2001-2004 Twisted Matrix Laboratories.
-# See LICENSE for details.
-
-
-"""
-An example client. Run simpleserv.py first before running this.
-"""
-
-from twisted.internet import reactor, protocol
+from twisted.internet.protocol import DatagramProtocol
+from twisted.internet import reactor
 
 
-class ElasticityClientProtocol(protocol.Protocol):
-    """Once connected, send a message, then print the result."""
+class ElasticityClientProtocol(DatagramProtocol):
+    strings = [
+        "Hello, world!",
+        "What a fine day it is.",
+        "Bye-bye!"
+    ]
     
-    def connectionMade(self):
-        self.transport.write("hello, world!")
+    def startProtocol(self):
+        self.transport.connect('127.0.0.1', 8000)
+        self.sendDatagram()
     
-    def dataReceived(self, data):
-        "As soon as any data is received, write it back."
-        print "Server said:", data
-        self.transport.loseConnection()
-    
-    def connectionLost(self, reason):
-        print "connection lost"
+    def sendDatagram(self):
+        if len(self.strings):
+            datagram = self.strings.pop(0)
+            self.transport.write(datagram)
+        else:
+            reactor.stop()
+
+    def datagramReceived(self, datagram, host):
+        print 'Datagram received: ', repr(datagram)
+        self.sendDatagram()
 
 
-class ElasticityClientProtocolFactory(protocol.ClientFactory):
-    protocol = ElasticityClientProtocol
-
-    def clientConnectionFailed(self, connector, reason):
-        print "Connection failed - goodbye!"
-        reactor.stop()
-    
-    def clientConnectionLost(self, connector, reason):
-        print "Connection lost - goodbye!"
-        reactor.stop()
-
-
-# this connects the protocol to a server runing on port 8000
 def main():
-    reactor.connectTCP("localhost", 8000, ElasticityClientProtocolFactory())
+    reactor.listenUDP(0, ElasticityClientProtocol())
     reactor.run()
 
 
-# this only runs if the module was *not* imported
 if __name__ == '__main__':
     main()
