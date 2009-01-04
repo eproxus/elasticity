@@ -1,1 +1,6 @@
-# Elasticity module declaration.
+"""
+Elasticity
+==========
+
+This is the beginning...
+"""
