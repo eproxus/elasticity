@@ -66,7 +66,7 @@ def main():
         msPassed = clock.tick()
         secondsPassed = msPassed / 1000.0
         
-        # Communicate with server
+        # Check for a valid connection.
         if not connected and connection.isConnected():
             print "Client connected to server"
             connected = True
@@ -74,13 +74,11 @@ def main():
             print "Connection failed"
             del connection
             return
-        #data = "Client to server"
-        #connection.sendPacket(data, len(data))
-        while True:
-            dataReceived = connection.receivePacket(256)
-            if not dataReceived:
-                break
-            print "Received packet from server"
+
+        # Receive data from server.
+        dataReceived = connection.receivePacket(256)
+        if dataReceived:
+            print "Received: " + dataReceived
         
         # Update the connection.
         connection.update(secondsPassed)
