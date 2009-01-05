@@ -12,18 +12,16 @@ from OpenGL.GLU import *
 
 def main():
     # Server address and receive buffer size (auto sized for sending).
-    host = "localhost"
-    port = 50007
-    address = (host,port)
+    serverAddress = ("localhost", 50010)
     bufferSize = 1024
     
     # Create socket and bind it (bind is only needed for receiving data).
     clientSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    clientSocket.setblocking(False)
     try:
-        clientSocket.bind(address)
+        clientSocket.bind(("", 50005))
     except:
-        print "Could not bind socket. Error: " + socket.error
+        print "Could not bind socket."
+    clientSocket.setblocking(False)
     
     # Init pygame.
     width = 800
@@ -58,7 +56,7 @@ def main():
                 return
             if event.type == KEYUP and event.key == K_SPACE:
                 try:
-                    clientSocket.sendto('space', address)
+                    clientSocket.sendto('space', serverAddress)
                 except:
                     print "Could not send data."
 
@@ -70,7 +68,7 @@ def main():
         try:
             data, addr = clientSocket.recvfrom(bufferSize)
             if data:
-                print "Data received: " + data
+                print "Data received: " + data + ", from: " + addr
         except:
             #print "No data received."
             pass
