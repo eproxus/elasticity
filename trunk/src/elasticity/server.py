@@ -12,8 +12,8 @@ def main():
     
     # Create one socket for each client and bind it to receive data.
     clientSocket1 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    clientSocket1.setblocking(False)
     clientSocket1.bind(("localhost", 50008))
+    clientSocket1.setblocking(False)
     
     # Add all clients to a list.
     clientSockets = [clientSocket1]
