@@ -43,6 +43,7 @@ class Connection:
         except:
             return False
         self.__running = True
+        self.onStart()
         return True
         
     def stop(self):
@@ -134,7 +135,7 @@ class Connection:
             if sender == self.__address:
                 if self.__mode == ConnectionMode.client and self.__state == ConnectionState.connecting:
                     print "Client completes connection with server"
-                    self.__state == ConnectionState.connected
+                    self.__state = ConnectionState.connected
                     self.onConnect()
                 self.__timeoutAccumulator = 0.0
                 return packet[len(self.__protocolId):]
