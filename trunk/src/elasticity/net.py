@@ -106,8 +106,6 @@ class Connection:
             elif self.__state == ConnectionState.connected:
                 print "Connection timed out"
                 self.__clearData()
-                if self.__state == ConnectionState.connecting:
-                    self.__state = ConnectionState.connectFail
                 self.onDisconnect()
         
     def sendPacket(self, data, size):

@@ -30,13 +30,17 @@ def main():
         # Advance time.
         msPassed = clock.tick()
         secondsPassed = msPassed / 1000.0
-            
+        
+        # Liste for data and bounce it.
         dataReceived = connection.receivePacket(256)
         if dataReceived:
-            print "Received packet from client"
             if connection.isConnected():
-                data = "Server to client"
+                data = "Bounce: " + dataReceived
                 connection.sendPacket(data, len(data))
+        
+        # Send some more data.
+        moreData = str(secondsPassed)
+        connection.sendPacket(moreData, len(moreData))
         
         # Update the connection.
         connection.update(secondsPassed)
