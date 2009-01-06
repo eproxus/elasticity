@@ -69,17 +69,9 @@ class Sequence(object):
 			   ((otherClamped > self.val) and ((otherClamped - self.val) > (self.maxval / 2))) or \
 			   self.val == otherClamped
 
-#	def __cmp__(self, operand):
-#		if self.val == operand:
-#			return 0
-#		elif ((self.val > operand) and ((self.val - operand) <= (self.maxval / 2))) or \
-#			 ((operand > self.val) and ((operand - self.val) > (self.maxval / 2))):
-#			 return 1
-#		else:
-#			return -1
-
 	def __repr__(self):
 		return str(self.val)
 
 	def __str__(self):
 		return str(self.val)
+
