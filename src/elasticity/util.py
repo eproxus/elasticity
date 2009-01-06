@@ -42,11 +42,15 @@ class Sequence(object):
 		return self
 	
 	def __lt__(self, other):
-		return ((self.val < other) and ((self.val - other) <= (self.maxval / 2))) or \
-			   ((other < self.val) and ((other - self.val) > (self.maxval / 2)))
+		otherClamped = other % self.maxval
+		return ((self.val < otherClamped) and ((self.val - otherClamped) <= (self.maxval / 2))) or \
+			   ((otherClamped < self.val) and ((otherClamped - self.val) > (self.maxval / 2)))
 	
 	def __le__(self, other):
-		pass
+		otherClamped = other % self.maxval
+		return ((self.val < otherClamped) and ((self.val - otherClamped) <= (self.maxval / 2))) or \
+			   ((otherClamped < self.val) and ((otherClamped - self.val) > (self.maxval / 2))) or \
+			   self.val == otherClamped
 	
 	def __eq__(self, other):
 		return self.val == (other % self.maxval)
@@ -56,11 +60,14 @@ class Sequence(object):
 	
 	def __gt__(self, other):
 		otherClamped = other % self.maxval
-		return ((self.val > otherClamped) and ((self.val - (other % self.maxval)) <= (self.maxval / 2))) or \
-			   ((otherClamped > self.val) and (((other % self.maxval) - self.val) > (self.maxval / 2)))
+		return ((self.val > otherClamped) and ((self.val - otherClamped) <= (self.maxval / 2))) or \
+			   ((otherClamped > self.val) and ((otherClamped - self.val) > (self.maxval / 2)))
 	
 	def __ge__(self, other):
-		pass
+		otherClamped = other % self.maxval
+		return ((self.val > otherClamped) and ((self.val - otherClamped) <= (self.maxval / 2))) or \
+			   ((otherClamped > self.val) and ((otherClamped - self.val) > (self.maxval / 2))) or \
+			   self.val == otherClamped
 
 #	def __cmp__(self, operand):
 #		if self.val == operand:

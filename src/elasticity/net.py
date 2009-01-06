@@ -137,7 +137,6 @@ class Connection:
 					self.onConnect()
 				self.__timeoutAccumulator = 0.0
 				return packet[len(self.__protocolId):]
-				
 		
 	def getHeaderSize(self):
 		return 4
