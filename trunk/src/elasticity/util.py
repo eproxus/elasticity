@@ -4,7 +4,7 @@ class Sequence(object):
 	incremented over maxval it starts over at 0 + the amount that overlapped.
 	A comparisson such as 2 > 9 with a max value of 10 would yield True as 2 is the
 	"latest" value. 7 > 9 would in that case give False as a result. 7 > 12 would
-	give Ture as 12 wrapped to 10 is 1.
+	give True as 12 wrapped to 10 is 2.
 	
 	Note that the value of a Sequence class must be set by setting seq.val = 10 due
 	to limits in the Python language. If one would write seq = 10 it woul assign an
@@ -32,6 +32,12 @@ class Sequence(object):
 		ret = self.val
 		self.__add__(1)
 		return ret
+	
+	def __setattr__(self, name, value):
+		if name == "val":
+			object.__setattr__(self, name, value % self.maxval)
+		else:
+			object.__setattr__(self, name, value)
 
 	def __add__(self, increment):
 		self.val = (self.val + increment) % self.maxval
@@ -43,31 +49,27 @@ class Sequence(object):
 	
 	def __lt__(self, other):
 		otherClamped = other % self.maxval
-		return ((self.val < otherClamped) and ((self.val - otherClamped) <= (self.maxval / 2))) or \
-			   ((otherClamped < self.val) and ((otherClamped - self.val) > (self.maxval / 2)))
+		halfMaxval = self.maxval / 2
+		return ((self.val < otherClamped) and ((self.val - otherClamped) <= halfMaxval)) or \
+			   ((otherClamped < self.val) and ((otherClamped - self.val) > halfMaxval))
 	
 	def __le__(self, other):
-		otherClamped = other % self.maxval
-		return ((self.val < otherClamped) and ((self.val - otherClamped) <= (self.maxval / 2))) or \
-			   ((otherClamped < self.val) and ((otherClamped - self.val) > (self.maxval / 2))) or \
-			   self.val == otherClamped
+		return self < other or self == other
 	
 	def __eq__(self, other):
 		return self.val == (other % self.maxval)
 	
 	def __ne__(self, other):
-		return self.val != (other % self.maxval)
+		return not self == other
 	
 	def __gt__(self, other):
 		otherClamped = other % self.maxval
-		return ((self.val > otherClamped) and ((self.val - otherClamped) <= (self.maxval / 2))) or \
-			   ((otherClamped > self.val) and ((otherClamped - self.val) > (self.maxval / 2)))
+		halfMaxval = self.maxval / 2
+		return ((self.val > otherClamped) and ((self.val - otherClamped) <= halfMaxval)) or \
+			   ((otherClamped > self.val) and ((otherClamped - self.val) > halfMaxval))
 	
 	def __ge__(self, other):
-		otherClamped = other % self.maxval
-		return ((self.val > otherClamped) and ((self.val - otherClamped) <= (self.maxval / 2))) or \
-			   ((otherClamped > self.val) and ((otherClamped - self.val) > (self.maxval / 2))) or \
-			   self.val == otherClamped
+		return self > other or self == other
 
 	def __repr__(self):
 		return str(self.val)
