@@ -2,7 +2,7 @@
 import socket
 
 
-class ConnectionMode:
+class ConnectionMode(object):
 	"""
 	Some modes that the connection class can be in.
 	"""
@@ -11,7 +11,7 @@ class ConnectionMode:
 	server = 2
 
 
-class ConnectionState:
+class ConnectionState(object):
 	"""
 	Some states that the connection class can have.
 	"""
@@ -22,7 +22,7 @@ class ConnectionState:
 	connected = 4
 
 
-class Connection:
+class Connection(object):
 	def __init__(self, protocolId, timeout):
 		self.__protocolId = protocolId
 		self.__timeout = timeout
