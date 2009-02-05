@@ -12,7 +12,6 @@ class Window(pyglet.window.Window):
         self.clear()
         if self.fps:
             self.fps_display.draw()
-        self.label.draw()
     
     def on_key_press(self, symbol, modifiers):
         if symbol == key.F11:
